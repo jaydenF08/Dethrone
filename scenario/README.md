@@ -20,20 +20,6 @@ Retour visuel et sensoriel
 Le scénarimage doit inclure des annotations ou des visuels montrant les réponses visuelles, sonores ou tactiles à chaque interaction. Cela peut inclure des changements d’éclairage, des transitions vidéo, ou des effets sonores qui réagissent aux actions de l’utilisateur.
 -->
 
-## Vue d'ensemble
-
-| Geste | Bat… |
-| -- | -- |
-| **Parade** | l'Attaque |
-| **Feinte** | la Parade |
-| **Attaque** | la Feinte |
-
-- Chaque joueur choisit **ses 3 gestes d'avance** sur son téléphone, puis les fait avec une **épée en mousse**.
-- Celui qui gagne le plus de manches gagne le duel. **Égalité : le roi garde son trône.**
-- Trône vide et deux personnes en même temps : **le plus âgé a la priorité**.
-
----
-
 ## Scène 1 : Le trône libre
 
 ![Scène 1 : Le trône libre](img/scene1.svg)
