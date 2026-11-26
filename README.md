@@ -6,9 +6,9 @@ Ce site présente la faisabilité d'un *concept d'expérience multimédia* prés
 
 ## Équipe
 
-- Ben Fradj, Adam (comme vous voulez être nommé) : rôle (tech, prog, esthétique)
-- Sadki, Mohamed Ali (comme vous voulez être nommé) : rôle (tech, prog, esthétique)
-- Jayden Ferdinand
+- Ben Fradj, Adam : rôle : Tech
+- Sadki, Mohamed Ali : rôle : Esthétique
+- Jayden Ferdinand : rôle : Prog
 
 ## Résumé du projet
 
