@@ -13,49 +13,51 @@ Ce site présente la faisabilité d'un *concept d'expérience multimédia* prés
 
 **Dethrône** est une installation interactive où le visiteur s'assoit sur un vrai trône pour devenir roi, et où n'importe qui peut venir le défier en duel devant la foule pour lui prendre sa place.
 
-Le duel est un roche-papier-ciseaux à trois gestes : **Attaque**, **Parade** et **Feinte**. Chaque joueur choisit en secret avec des boutons, puis le résultat est révélé lentement à l'écran, comme dans l'activité *Rock Paper Scissors+* vue en classe. Le premier à gagner deux manches remporte le duel.
+Tout passe par le **téléphone** des joueurs. Le roi scanne le code QR du trône, le challenger scanne celui du piédestal. Avant le duel, chacun choisit en secret ses **3 gestes** (un par manche) parmi **Attaque**, **Parade** et **Feinte**. Ensuite, les deux joueurs prennent une **épée en mousse** et exécutent leurs 3 gestes en même temps, au rythme des tambours. L'écran annonce le gagnant de chaque manche, puis le verdict.
 
-Autour du duel, les spectateurs forment la **Cour** : ils choisissent leur camp en se plaçant sur un tapis au sol, les **Fidèles** pour soutenir le roi, les **Rebelles** pour le faire tomber. Le camp le plus nombreux donne un avantage à son joueur.
+Comme les choix arrivent directement des téléphones, le système sait toujours qui est le roi et combien de **victoires de suite** il a.
 
-Quand un roi perd sa place, le système génère un **blason unique** à partir de son règne. Ce blason rejoint la **Galerie des Règnes**, projetée sur un mur, et l'ex-roi repart avec une version imprimée. La Galerie devient l'histoire de tous ceux qui sont passés.
+Autour du duel, les spectateurs se placent sur deux tapis pour montrer leur camp : les **Fidèles** soutiennent le roi, les **Rebelles** veulent le faire tomber. Les tapis n'ont aucun effet sur le jeu : ils servent à rassembler la foule et à créer l'ambiance.
+
+Quand un roi perd sa place, le système génère un **blason unique** à partir de son règne. Ce blason rejoint la **Galerie des Règnes**, projetée sur un mur, et apparaît sur le téléphone de l'ex-roi, qui peut le garder en souvenir.
 
 | | |
 | -- | -- |
 | **Médium** | Installation interactive |
 | **Public cible** | Les tueurs (taxonomie de Bartle) : agir sur les autres joueurs, attaquer, battre, dominer |
 | **Thème** | La communauté : la foule choisit son camp et vit le duel ensemble |
-| **Types d'interaction** | Agir sur un objet central · Agir sur son environnement · Collaborer à plusieurs · Laisser une trace |
+| **Types d'interaction** | Agir sur un objet central (le trône) · Étendre son corps par un objet (le téléphone, l'épée) · Laisser une trace (la Galerie) |
 | **Continuum** | Entre le milieu (*modifier l'œuvre*) et la droite (*faire émerger de nouvelles situations*) |
-| **Artéfact** | Un blason génératif par roi, dans la Galerie des Règnes et sur un ticket imprimé |
+| **Artéfact** | Un blason génératif par roi, dans la Galerie des Règnes et sur le téléphone de l'ex-roi |
 
 ## Le parcours de l'interacteur
 
-1. **Il entre et observe.** En entrant, le visiteur voit un trône éclairé par un projecteur au fond de la salle. Si personne n'y est assis, c'est le **Roi Fantôme** (une IA) qui règne à l'écran. Sinon, il voit le roi en place, son nombre de victoires et la foule autour.
-2. **Il choisit son camp.** En attendant son tour, il se place sur le tapis des **Fidèles** ou celui des **Rebelles**. Il peut changer de camp à tout moment.
-3. **Il défie le roi.** Il monte sur le **piédestal** en face du trône. Le système détecte sa présence et lance le duel.
-4. **Il choisit son geste en secret.** Pendant 5 secondes, lui et le roi appuient chacun sur un des trois boutons : Attaque, Parade ou Feinte.
-5. **Il assiste à la révélation.** Les deux cartes se retournent au ralenti sur le grand écran pendant 3 secondes. La musique monte, le spot tremble, la foule réagit.
-6. **Il gagne ou il perd.** Le premier à deux manches gagne le duel.
-   - S'il gagne, le roi se lève et le challenger **s'assoit sur le trône** : il devient le nouveau roi. La caméra prend sa photo.
-   - S'il perd, il quitte le piédestal et le roi gagne une pierre sur sa couronne.
-7. **Il règne.** En tant que roi, il défend son trône contre chaque nouveau challenger. Après 3 victoires, il obtient un **décret royal** qui lui permet de changer une règle pour le prochain duel.
-8. **Il tombe, et il laisse une trace.** Quand il est détrôné, son **blason** est généré, ajouté à la **Galerie des Règnes** et imprimé sur un ticket qu'il emporte à la sortie.
+1. **Il entre et observe.** Il voit un trône éclairé au fond de la salle. Si le trône est vide, l'écran affiche « Le trône est libre ». Sinon, il voit le nom du roi, ses victoires de suite et la file des challengers.
+2. **Il prend le trône (s'il est libre).** Il s'assoit, scanne le code QR du trône avec son téléphone et entre son pseudo. Il devient roi. Si deux personnes arrivent en même temps, **la plus âgée a la priorité**.
+3. **Ou il défie le roi.** Il scanne le code QR du piédestal et entre son pseudo. Il est ajouté à la file d'attente ; son téléphone lui indique sa place.
+4. **Il prépare son duel en secret.** Quand c'est son tour, il choisit sur son téléphone ses 3 gestes, un par manche (par exemple : Feinte, Attaque, Parade), puis il valide. Le roi fait la même chose de son côté.
+5. **Il se bat à l'épée.** Les deux joueurs prennent une épée en mousse. Pour chaque manche, l'écran compte « 3, 2, 1, FRAPPEZ ! » et les deux joueurs font en même temps le geste choisi. L'écran annonce ensuite qui gagne la manche.
+6. **Il gagne ou il perd.** Après les 3 manches, celui qui en a gagné le plus remporte le duel. En cas d'égalité, le roi garde son trône.
+   - Si le challenger gagne, le roi se lève et le challenger s'assoit : il devient le nouveau roi.
+   - Si le roi gagne, il ajoute une victoire à sa série et le challenger suivant s'avance.
+7. **Il règne.** Après 3 victoires de suite, le roi peut imposer un **décret** depuis son téléphone : interdire un geste à son prochain adversaire.
+8. **Il tombe, et il laisse une trace.** Quand il perd, son **blason** est généré, ajouté à la **Galerie des Règnes** et envoyé sur son téléphone.
 
 ## Comment le projet s'adapte pour un à plusieurs interacteurs
 
 | Nombre de personnes | Ce qui se passe |
 | -- | -- |
-| **1 personne** | Le trône est vide : le visiteur affronte le **Roi Fantôme**, une IA qui joue à l'écran. S'il gagne, il devient le premier roi. Il peut aussi s'asseoir directement sur le trône et attendre un challenger. |
-| **2 personnes** | Un roi sur le trône, un challenger sur le piédestal : c'est le duel de base. |
-| **3 personnes et plus** | Les autres visiteurs forment la **Cour**. Ils se placent sur le tapis des Fidèles ou des Rebelles, et le camp le plus nombreux donne un avantage à son joueur (une manche perdue est annulée). Ils font la file pour défier le roi. |
-| **Grande foule** | Le duel devient un spectacle : les deux tapis peuvent accueillir jusqu'à environ 16 personnes chacun, et les autres regardent autour. |
+| **1 personne** | Elle s'assoit, scanne le code du trône et devient roi. Elle règne en attendant un challenger, et son nom reste affiché à l'écran. |
+| **2 personnes** | Un roi sur le trône, un challenger sur le piédestal : c'est le duel de base. Si le trône est vide et que les deux arrivent en même temps, la plus âgée s'assoit en premier. |
+| **3 personnes et plus** | Les challengers s'ajoutent à la **file d'attente** en scannant le code du piédestal ; l'écran et leur téléphone affichent l'ordre de passage. Les autres se placent sur le tapis des Fidèles ou des Rebelles pour encourager leur camp. |
+| **Grande foule** | Le duel devient un spectacle : la foule entoure les duellistes et réagit à chaque coup d'épée. |
 
-Le système ne demande aucune inscription : il suffit de s'asseoir, de monter sur le piédestal ou de marcher sur un tapis.
+Le seul outil nécessaire est un téléphone. Un téléphone de prêt est disponible à l'entrée pour les visiteurs qui n'en ont pas.
 
 ## Pourquoi ce projet est original ?
 
 - **Le pouvoir devient visible.** Dans un groupe, on ne voit jamais comment quelqu'un prend le pouvoir ni comment il le perd. Dans Dethrône, tout se passe devant tout le monde.
-- **La foule fait partie du jeu.** Les spectateurs ne regardent pas seulement : en se déplaçant d'un tapis à l'autre, ils influencent le duel. Des inconnus forment des camps, se trahissent et créent leurs propres légendes.
+- **Un duel joué avec le corps.** Les gestes sont choisis en secret sur le téléphone, mais ils sont exécutés pour vrai, à l'épée, devant la foule. Personne ne sait ce que l'autre va faire avant le coup.
+- **Le bluff avant le combat.** Choisir ses 3 gestes d'avance oblige à anticiper l'adversaire : va-t-il commencer par attaquer ? Va-t-il répéter le même geste ?
 - **Un objet réel au centre.** Le trône est un vrai siège : s'asseoir dessus, c'est déjà un geste fort, et devoir s'en lever devant tout le monde l'est encore plus.
-- **La révélation lente.** Inspirée de *Rock Paper Scissors+*, elle transforme un simple choix en moment dramatique et fait réagir toute la salle.
 - **Une mémoire collective.** Avec la Galerie des Règnes, chaque roi laisse un blason généré à partir de son règne. Plus l'installation vit, plus son histoire grandit.

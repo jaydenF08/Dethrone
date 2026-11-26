@@ -4,102 +4,81 @@
 
 Salle de référence : 8 m × 7 m, plafond de 4,5 m, salle sombre (voir la section Plans plus bas).
 
+L'installation n'utilise **aucun capteur** : toutes les interactions passent par les **téléphones** des joueurs (codes QR et page web) et par les **épées en mousse**, qui sont des accessoires de jeu.
+
 ### Projection
 
 | Qté | Équipement | Justification |
 | --: | -- | -- |
-| 2 | Projecteur laser 5 000 lumens, WUXGA (1920 × 1200), objectif zoom 1,0–1,6 | Un pour l'**écran principal** (derrière le trône), un pour la **Galerie des Règnes** (mur de gauche). 5 000 lm suffisent pour une image de 4 m dans une salle sombre. Le laser évite de changer de lampe pendant l'exposition. Le zoom permet de faire une image de 4 m de large à 4 m (P1) et à 5 m (P2). |
-| 2 | Support de plafond | Les projecteurs sont suspendus à 4,1 m pour que le faisceau passe au-dessus du roi et du challenger (voir la coupe). |
+| 2 | Projecteur 4 000 lumens, WUXGA (1920 × 1200), objectif zoom 1,0–1,6 | Un pour l'**écran principal** (derrière le trône), un pour la **Galerie des Règnes** (mur de gauche). 4 000 lm suffisent dans une salle sombre. Le zoom permet de faire une image de 4 m de large à 4 m (P1) et à 5 m (P2). |
+| 2 | Support de plafond | Les projecteurs sont suspendus à 4,1 m pour que le faisceau passe au-dessus des duellistes (voir la coupe). |
 | 2 | Toile de projection tendue 4 × 2,25 m | Surface uniforme pour l'écran principal et la Galerie (format 16:9). |
 
 ### Ordinateur
 
 | Qté | Équipement | Justification |
 | --: | -- | -- |
-| 1 | PC de régie : Core i7, carte graphique RTX 4070, 32 Go de RAM, 3 sorties vidéo | Fait tourner **Unity**, **TouchDesigner** (Kinect), **OBS**, **QLC+** et **Pure Data** en même temps. Il faut 2 sorties pour les projecteurs et 1 pour le moniteur de contrôle. La RTX est requise par le SDK de la Kinect Azure. |
-| 1 | Moniteur de contrôle 24 po | Surveiller l'installation et les logiciels depuis la régie. |
+| 1 | PC de régie : Core i5, RTX 3050, 16 Go de RAM, 3 sorties vidéo | Fait tourner le **serveur du jeu** (Node.js) et deux fenêtres Chrome plein écran (écran principal et Galerie). 2 sorties pour les projecteurs et 1 pour le moniteur. |
+| 1 | Moniteur de contrôle 24 po | Surveiller le serveur et les deux pages depuis la régie. |
 
-### Capteurs et contrôleurs
-
-| Qté | Équipement | Justification |
-| --: | -- | -- |
-| 1 | Kinect Azure (ou Orbbec Femto Bolt) | Montée sur la console du piédestal, tournée vers le trône (2,3 m). Elle prend la **photo du roi** au couronnement et vérifie qu'un visage est bien dans le cadre. Portée de 0,5 à 3,9 m. |
-| 2 | Arduino Uno R4 | Un dans le **trône**, un dans le **piédestal**. Chacun lit 3 boutons et 1 capteur de force, et allume les LED des boutons. |
-| 6 | Bouton d'arcade lumineux 60 mm | 3 dans l'accoudoir du trône, 3 sur la console du piédestal : **Attaque**, **Parade**, **Feinte**. La LED intégrée confirme le choix (« prêt ») sans le révéler à la foule. |
-| 2 | Capteur de force FSR 38 mm | Un sous le coussin du trône (**le roi est assis**), un sous le plateau du piédestal (**un challenger est présent**). |
-| 32 | Dalle de pression 50 × 50 cm (interrupteur de sol) | 16 dalles par tapis de 2 × 2 m. Chaque dalle activée compte comme une personne : on peut **compter** les Fidèles et les Rebelles, et pas seulement détecter une présence. |
-| 2 | M5Stack ATOM PoE | Un par tapis. Il lit les 16 dalles et envoie le compte en **OSC** par Ethernet. Alimenté par le câble réseau (PoE) : aucun bloc d'alimentation au sol. |
-| 2 | Module d'entrées MCP23017 | L'ATOM n'a que quelques broches : le MCP23017 ajoute 16 entrées (une par dalle) par I2C. |
-
-### Réseau
+### Réseau et téléphones
 
 | Qté | Équipement | Justification |
 | --: | -- | -- |
-| 1 | Switch Gigabit PoE 8 ports | Relie le PC aux deux ATOM PoE et les alimente. |
-| 0 | Routeur | Pas nécessaire : réseau local fermé avec adresses IP fixes (voir le plan d’adressage plus bas). Aucun accès Internet requis pendant l'exposition. |
-
-### Éclairage
-
-| Qté | Équipement | Justification |
-| --: | -- | -- |
-| 1 | Projecteur de découpe LED RGBW, DMX | Le **spot** au-dessus du trône : il isole le roi (blanc chaud), tremble pendant la révélation et passe au rouge quand le roi tombe. La découpe évite d'éclairer les écrans. |
-| 1 | Interface USB-DMX (Enttec DMX USB Pro) | Relie QLC+ au spot. Compatible directement avec QLC+. |
+| 1 | Routeur WiFi 6 bi-bande | Crée le réseau local **DETHRONE**. Les téléphones des joueurs s'y connectent pour ouvrir la page du jeu. Un réseau fermé évite de dépendre d'Internet ou du WiFi du lieu. |
+| — | Téléphones des visiteurs | Le roi et les challengers utilisent **leur propre téléphone** : aucune application à installer, seulement une page web. |
+| 1 | Téléphone Android de prêt | Pour les visiteurs qui n'ont pas de téléphone ou plus de batterie. |
+| 2 | Support de téléphone | Un sur l'accoudoir du trône, un sur la console du piédestal : pendant le duel, le joueur pose son téléphone pour garder les mains libres et voir le geste de la manche. |
 
 ### Son
 
 | Qté | Équipement | Justification |
 | --: | -- | -- |
-| 1 | Interface audio USB 8 sorties (ex. Behringer UMC1820) | Unity sort en 7.1 : 4 canaux pour les haut-parleurs et le canal des basses (LFE) pour le transducteur. |
-| 4 | Haut-parleur actif 8 po | Un dans chaque coin, à 2,2 m : son enveloppant pour l'ambiance de grande salle et la clameur de foule. |
-| 4 | Pied ou support mural | Fixer les haut-parleurs à 2,2 m, hors de portée du public. |
-| 1 | Transducteur tactile (bass shaker) | Vissé sous le siège du trône : le roi **sent** la fanfare et l'impact de la révélation. C'est le « caisson de basses » du trône. |
-| 1 | Amplificateur 100 W | Alimente le transducteur. |
-| 0 | Microphone | Pas nécessaire : la clameur de la vraie foule s'ajoute naturellement au son de l'installation. |
+| 1 | Interface audio USB 2 sorties | Sortie stéréo propre vers les haut-parleurs. |
+| 2 | Haut-parleur actif 8 po | Dans les coins du fond, à 2,2 m : ambiance de grande salle, tambours du duel, clameur. |
+| 2 | Pied ou support mural | Fixer les haut-parleurs à 2,2 m, hors de portée du public. |
+| 1 | Caisson de basses actif 10 po | Placé juste derrière le trône : le roi **sent** les tambours et les impacts dans son dos. |
 
-### Impression
+### Éclairage
 
 | Qté | Équipement | Justification |
 | --: | -- | -- |
-| 1 | Imprimante thermique de reçus 80 mm, USB | Imprime le **blason** de l'ex-roi sur un ticket qu'il emporte. Thermique : pas d'encre, rapide et silencieuse. Placée près de la sortie, reliée à la régie (2 m). |
-| 1 | Boîte de papier thermique 80 mm | Environ 50 rouleaux. |
+| 1 | Projecteur LED blanc chaud 50 W, fixe | Le **spot** au-dessus du trône : il isole le roi. Il reste toujours allumé, sans contrôle informatique, pour garder l'installation simple. |
 
-### Décor
+### Accessoires et décor
 
 | Qté | Équipement | Justification |
 | --: | -- | -- |
-| 1 | Trône (MDF, peinture dorée, rembourrage) | L'**objet central** de l'installation. Il cache l'Arduino, le FSR, les boutons et le transducteur. |
-| 1 | Piédestal 60 × 60 cm, 20 cm de haut, avec console à 1,1 m | Le challenger monte dessus. La console porte les 3 boutons et la Kinect. |
+| 3 | Épée en mousse (type grandeur nature, GN) | Une pour le roi, une pour le challenger, une de rechange. La mousse permet de se toucher sans se blesser. |
+| 1 | Crochets muraux | Ranger les épées à côté du piédestal entre les duels. |
+| 1 | Trône (MDF, peinture dorée, rembourrage) | L'**objet central** de l'installation. Une plaque dorée sur l'accoudoir porte le code QR du trône. |
+| 1 | Piédestal 60 × 60 cm, 20 cm de haut, avec console à 1,1 m | Le challenger se tient dessus. La console porte le code QR du défi et un support de téléphone. |
+| 2 | Tapis 2 × 2 m (un doré, un rouge) | Les tapis des **Fidèles** et des **Rebelles**. Ce sont de simples tapis, **sans capteur et sans effet sur le jeu** : ils rassemblent la foule par camp. |
+| 1 | Plaques des codes QR et affiche d'accueil | 2 plaques (trône et piédestal) et une affiche à l'entrée avec le code QR du WiFi, les règles du duel et la règle de priorité au plus âgé. |
 
 ### Câbles
 
 | Qté | Câble | De → vers |
 | --: | -- | -- |
 | 2 | HDMI actif fibre 15 m | PC → projecteurs 1 et 2 |
-| 5 | XLR 15 m | Interface audio → 4 haut-parleurs et amplificateur du transducteur |
-| 3 | Ethernet Cat6 | Switch → ATOM Fidèles, ATOM Rebelles (10 m) ; switch → PC (2 m) |
-| 2 | Rallonge USB active 10 m | PC → Arduino du trône et du piédestal |
-| 1 | Rallonge USB-C 3.2 active 10 m | PC → Kinect |
-| 1 | Câble DMX 3 broches 15 m | Interface USB-DMX → spot |
-| 1 | Câble USB 5 m | PC → imprimante |
-| 6 | Rallonges et barres d'alimentation | Projecteurs, haut-parleurs, régie, spot |
+| 3 | XLR 15 m | Interface audio → 2 haut-parleurs et caisson de basses |
+| 1 | Ethernet Cat6 2 m | PC → routeur WiFi |
+| 5 | Rallonges et barres d'alimentation | Projecteurs, haut-parleurs, caisson, spot, régie |
 | 1 | Ruban de sol et passe-câbles | Tous les câbles au sol sont couverts pour la sécurité du public |
 
 ## Logiciels
 
 | Rôle | Logiciel | Utilisation dans Dethrône |
 | -- | -- | -- |
-| Environnement de programmation principal | **Unity** (C#) | Logique du jeu (scènes, duel, Faveur, décrets, Roi Fantôme), affichage de l'écran principal et de la Galerie, génération des blasons, son 7.1 |
-| Programmation des microcontrôleurs | **Arduino IDE** | Lecture des boutons et des FSR, LED des boutons ; envoi des messages en SLIP |
-| Programmation des ATOM PoE | **Arduino IDE** + bibliothèque M5Atom | Lecture des 16 dalles par tapis, envoi en OSC |
-| Traitement de capteurs (série) | **Pure Data** | Pont entre les Arduino (USB série, SLIP) et Unity (OSC) |
-| Traitement de la caméra | **TouchDesigner** + **MediaPipe** | Image de la Kinect, détection du visage, photo du roi ; image envoyée à Unity par Spout |
-| Partage vidéo entre logiciels | **Spout** | TouchDesigner → Unity (photo), Unity → OBS (rendu des deux écrans) |
-| Logiciel de projection | **OBS Studio** | Reçoit les 2 rendus de Unity par Spout et les envoie en plein écran sur chaque projecteur ; ajustement de la géométrie |
-| Gestion d'éclairage | **QLC+** | Reçoit les commandes OSC de Unity et pilote le spot en DMX |
-| Gestion du son | **Unity Audio** (sortie 7.1) | Ambiances, sons évènementiels, spatialisation sur 4 haut-parleurs, canal LFE vers le transducteur |
-| Impression | **Python** + **python-escpos** | Petit serveur OSC qui reçoit le chemin du blason et l'imprime |
-| Production sonore | **Reaper** | Création des ambiances et des sons évènementiels |
-| Production visuelle | **Illustrator**, **Photoshop**, **TouchDesigner** | Cartes, couronnes, interface, éléments du blason |
+| Serveur et logique du jeu | **Node.js** + **Express** + **Socket.IO** | Garde l'état du jeu (roi, victoires de suite, file, duel en cours), reçoit les choix des téléphones et envoie les mises à jour à toutes les pages en temps réel |
+| Page du téléphone | **HTML, CSS, JavaScript** | Pseudo, file d'attente, choix des 3 gestes, geste de la manche, résultat, blason à enregistrer |
+| Écran principal et Galerie | **HTML, JavaScript** + **p5.js** | Animations de l'écran, décomptes du duel, construction du blason génératif, défilement de la Galerie |
+| Gestion du son | **Howler.js** (dans la page de l'écran principal) | Ambiances, tambours, impacts, fanfares |
+| Logiciel de projection | **Google Chrome** en mode kiosque | Une fenêtre plein écran par projecteur, lancée automatiquement au démarrage |
+| Codes QR | Générateur de codes QR (ex. bibliothèque `qrcode`) | Codes du trône, du piédestal et du WiFi |
+| Environnement de programmation | **Visual Studio Code** | Écriture et test du code |
+| Production sonore | **Reaper** | Création des ambiances et des sons du duel |
+| Production visuelle | **Illustrator**, **Photoshop** | Couronnes, icônes des gestes, éléments du blason, interface du téléphone |
 
 ## Synoptique
 
@@ -107,110 +86,73 @@ Salle de référence : 8 m × 7 m, plafond de 4,5 m, salle sombre (voir la secti
 
 ```mermaid
 flowchart TB
-    subgraph CAPT["Capteurs dans la salle"]
+    subgraph SALLE["Dans la salle"]
         direction LR
-        subgraph TRONE["Trône"]
-            direction TB
-            BT["3 boutons + LED"] --- ARD1["Arduino 1"]
-            FSR1["FSR siège"] --- ARD1
-        end
-        subgraph PIED["Piédestal"]
-            direction TB
-            BP["3 boutons + LED"] --- ARD2["Arduino 2"]
-            FSR2["FSR plateau"] --- ARD2
-            KIN["Kinect Azure"]
-        end
-        subgraph SOL["Tapis de la Cour"]
-            direction TB
-            DF["16 dalles Fidèles"] --- AF["MCP23017 + ATOM PoE Fidèles"]
-            DR["16 dalles Rebelles"] --- AR["MCP23017 + ATOM PoE Rebelles"]
-        end
+        TR["Téléphone du roi<br/>(sur l'accoudoir)"]
+        TC["Téléphone du challenger<br/>(sur la console)"]
+        TF["Téléphones des<br/>challengers en file"]
+        QR["Codes QR imprimés<br/>trône · piédestal · WiFi"]
     end
-    SW["Switch PoE"]
-    PC["PC de régie<br/>Unity · TouchDesigner · OBS · QLC+ · Pure Data · Python"]
-    ARD1 -->|"USB · série SLIP"| PC
-    ARD2 -->|"USB · série SLIP"| PC
-    KIN -->|"USB-C 3.2 · profondeur + couleur"| PC
-    AF -->|"Ethernet PoE · OSC/UDP"| SW
-    AR -->|"Ethernet PoE · OSC/UDP"| SW
-    SW -->|"Ethernet · OSC/UDP"| PC
-    subgraph SORTIES["Sorties"]
-        direction LR
-        P1["Projecteur 1<br/>écran principal"]
-        P2["Projecteur 2<br/>Galerie"]
-        MON["Moniteur"]
-        AUD["Interface audio<br/>8 sorties"] -->|"XLR · ligne"| HP["4 haut-parleurs"]
-        AUD -->|"XLR · LFE"| AMP["Ampli 100 W"] -->|"câble HP"| SHK["Transducteur<br/>sous le trône"]
-        DMXI["Interface USB-DMX"] -->|"DMX512"| SPOT["Spot LED RGBW"]
-        IMP["Imprimante thermique"]
-    end
-    PC -->|"HDMI fibre"| P1
-    PC -->|"HDMI fibre"| P2
-    PC -->|"HDMI"| MON
-    PC -->|"USB · audio 7.1"| AUD
-    PC -->|"USB"| DMXI
-    PC -->|"USB · ESC/POS"| IMP
+    QR -.->|"scan avec l'appareil photo"| TR & TC & TF
+    TR -->|"WiFi 5 GHz"| RT["Routeur WiFi<br/>réseau DETHRONE"]
+    TC -->|"WiFi 5 GHz"| RT
+    TF -->|"WiFi 5 GHz"| RT
+    RT -->|"Ethernet"| PC["PC de régie<br/>serveur Node.js · Chrome × 2"]
+    PC -->|"HDMI fibre"| P1["Projecteur 1<br/>écran principal"]
+    PC -->|"HDMI fibre"| P2["Projecteur 2<br/>Galerie"]
+    PC -->|"HDMI"| MON["Moniteur"]
+    PC -->|"USB · audio stéréo"| AUD["Interface audio"]
+    AUD -->|"XLR · gauche / droite"| HP["2 haut-parleurs actifs"]
+    AUD -->|"XLR"| SUB["Caisson de basses<br/>derrière le trône"]
+    SPOT["Spot LED fixe"] ---|"alimentation seulement"| EL["Courant"]
 ```
 
 ### Communication entre les logiciels
 
 ```mermaid
 flowchart TB
-    ARD["Arduino trône<br/>Arduino piédestal"] -->|"SLIP sur USB série"| PD["Pure Data"]
-    PD -->|"OSC · UDP 127.0.0.1:9000"| U["Unity<br/>(logique du jeu)"]
-    ATOM["ATOM Fidèles<br/>ATOM Rebelles"] -->|"OSC · UDP 192.168.1.10:9000"| U
-    TD["TouchDesigner<br/>(Kinect + MediaPipe)"] -->|"OSC · UDP :9000"| U
-    TD -->|"Spout · photo"| U
-    U -->|"OSC · UDP :9010"| TD
-    U -->|"OSC · UDP :9001"| PD
-    U -->|"Spout · écran principal"| OBS["OBS Studio"]
-    U -->|"Spout · Galerie"| OBS
-    U -->|"OSC · UDP :7700"| QLC["QLC+"]
-    U -->|"OSC · UDP :9200"| PY["Script Python<br/>impression"]
-    U -->|"Audio 7.1"| SND["Interface audio"]
+    PT["Pages des téléphones<br/>/trone · /defi"] <-->|"Socket.IO (WebSocket) · port 3000"| SRV["Serveur Node.js<br/>état du jeu"]
+    SRV <-->|"Socket.IO · localhost:3000"| ECR["Page écran principal<br/>(Chrome · projecteur 1)"]
+    SRV -->|"Socket.IO · localhost:3000"| GAL["Page Galerie<br/>(Chrome · projecteur 2)"]
+    ECR -->|"image PNG du blason (HTTP POST)"| SRV
+    SRV -->|"fichier PNG"| DISK["Dossier /galerie<br/>sur le disque"]
+    ECR -->|"audio"| SON["Interface audio"]
 ```
 
 ### Protocoles et signaux
 
 | Liaison | Type de signal | Protocole | Détail |
 | -- | -- | -- | -- |
-| Arduino → Pure Data | Données série sur USB | **SLIP** | Chaque message (bouton, FSR) est encodé en SLIP pour être découpé proprement |
-| Pure Data → Unity | Réseau local (même PC) | **OSC sur UDP** | Pure Data décode le SLIP et retransmet en OSC |
-| Unity → Pure Data → Arduino | Données série sur USB | **SLIP** | Allumer les LED des boutons (« prêt ») |
-| ATOM PoE → Unity | Ethernet | **OSC sur UDP** | Nombre de personnes sur chaque tapis, envoyé à chaque changement |
-| TouchDesigner ↔ Unity | Réseau local + mémoire GPU | **OSC sur UDP** + **Spout** | Demande de photo, visage détecté ; image partagée par Spout |
-| Unity → OBS | Mémoire GPU | **Spout** | Deux textures : écran principal et Galerie |
-| OBS → projecteurs | Vidéo | **HDMI** | 1920 × 1200, 60 Hz |
-| Unity → QLC+ | Réseau local | **OSC sur UDP** | Intensité, couleur et tremblement du spot |
-| QLC+ → spot | Lumière | **DMX512** | Univers 1, adresse 1, mode 8 canaux |
-| Unity → imprimante | Réseau local puis USB | **OSC sur UDP** puis **ESC/POS** | Le script Python reçoit le chemin du blason et l'imprime |
-| Unity → haut-parleurs | Audio | **USB audio**, puis analogique **XLR** | 7.1 : canaux 1 à 4 pour les haut-parleurs, canal LFE pour le transducteur |
+| Code QR → téléphone | Image imprimée | **QR code** | Le code du WiFi connecte le téléphone au réseau ; les codes du trône et du piédestal ouvrent `http://192.168.0.10:3000/trone` ou `/defi` |
+| Téléphones → routeur | Sans fil | **WiFi** 5 GHz (WPA2) | Réseau local fermé **DETHRONE** |
+| Routeur → PC | Réseau | **Ethernet** | Le PC a une adresse fixe |
+| Téléphones ↔ serveur | Réseau | **HTTP** puis **WebSocket (Socket.IO)** | La page est chargée en HTTP, puis les évènements circulent en temps réel |
+| Serveur ↔ écran et Galerie | Réseau local (même PC) | **Socket.IO** | Les deux pages reçoivent l'état du jeu |
+| Écran → serveur | Réseau local | **HTTP POST** | Le blason dessiné par p5.js est envoyé en PNG et sauvegardé |
+| PC → projecteurs | Vidéo | **HDMI** | 1920 × 1200, 60 Hz |
+| PC → haut-parleurs | Audio | **USB audio**, puis analogique **XLR** | Stéréo + caisson de basses |
 
-### Messages OSC
+### Évènements Socket.IO
 
-| Adresse | Valeurs | Source → destination |
+| Évènement | Données | Source → destination |
 | -- | -- | -- |
-| `/trone/assis` | `0` ou `1` | Arduino 1 → Unity |
-| `/trone/bouton` | `0` Attaque, `1` Parade, `2` Feinte | Arduino 1 → Unity |
-| `/piedestal/present` | `0` ou `1` | Arduino 2 → Unity |
-| `/piedestal/bouton` | `0`, `1` ou `2` | Arduino 2 → Unity |
-| `/cour/fideles` | nombre de dalles actives (0 à 16) | ATOM Fidèles → Unity |
-| `/cour/rebelles` | nombre de dalles actives (0 à 16) | ATOM Rebelles → Unity |
-| `/kinect/visage` | `0` ou `1` | TouchDesigner → Unity |
-| `/kinect/photo` | demande de photo / chemin du fichier | Unity ↔ TouchDesigner |
-| `/led/trone`, `/led/piedestal` | `0` éteint, `1` prêt | Unity → Pure Data → Arduino |
-| `/lumiere/spot` | intensité, R, V, B, B, tremblement | Unity → QLC+ |
-| `/imprimante/blason` | chemin de l'image PNG | Unity → script Python |
+| `rejoindre` | rôle (`trone` ou `defi`), pseudo | Téléphone → serveur |
+| `gestes` | les 3 gestes, par exemple `["Feinte", "Attaque", "Parade"]` | Téléphone → serveur |
+| `decret` | geste interdit | Téléphone du roi → serveur |
+| `quitter` | — | Téléphone du roi → serveur |
+| `etat` | roi, victoires de suite, durée du règne, file d'attente | Serveur → toutes les pages |
+| `preparer` | geste interdit (s'il y a un décret), durée du décompte | Serveur → téléphones des duellistes et écran |
+| `manche` | numéro, geste à faire, puis résultat | Serveur → téléphones et écran |
+| `verdict` | gagnant, score | Serveur → téléphones et écran |
+| `blason` | adresse de l'image PNG | Serveur → téléphone de l'ex-roi et Galerie |
 
 ### Plan d'adressage
 
-| Appareil | Adresse IP | Port d'écoute |
+| Appareil | Adresse IP | Port |
 | -- | -- | -- |
-| PC de régie | `192.168.1.10` | Unity `9000` · Pure Data `9001` · TouchDesigner `9010` · QLC+ `7700` · impression `9200` |
-| ATOM PoE Fidèles | `192.168.1.21` | — (envoie seulement) |
-| ATOM PoE Rebelles | `192.168.1.22` | — (envoie seulement) |
-
-Masque `255.255.255.0`, sans passerelle : le réseau est isolé.
+| Routeur WiFi | `192.168.0.1` | — |
+| PC de régie | `192.168.0.10` (réservée dans le routeur) | Serveur web et Socket.IO : `3000` |
+| Téléphones | attribuées automatiquement (DHCP) | — |
 
 ## Plans
 
@@ -230,14 +172,15 @@ Les plans sont **à l'échelle** (1 m = 70 px, grille de 1 m). La salle de réf�
 
 ### Choix d'implantation
 
-- **Le trône au fond, au centre**, face à l'entrée : c'est la première chose qu'on voit en entrant. L'écran principal est juste au-dessus (de 1,9 m à 4,15 m), pour que le roi et son image soient vus ensemble.
-- **Le piédestal à 1,7 m du trône**, face à lui : le duel se joue en face-à-face, et la Kinect sur sa console voit le trône à 2,3 m (dans sa portée de 0,5 à 3,9 m).
-- **Les projecteurs au plafond à 4,1 m** : le faisceau du projecteur 1 passe à environ 3,6 m au-dessus du piédestal, donc personne ne fait d'ombre sur l'écran.
-- **Les tapis de chaque côté du piédestal** (2 × 2 m chacun), à 1 m des murs : la foule entoure le duel, et le tapis des Fidèles reste hors de l'ombre du projecteur 2.
-- **La file des challengers dans l'allée centrale**, derrière le piédestal.
-- **Un haut-parleur dans chaque coin**, à 2,2 m de haut, tourné vers le centre.
-- **La régie dans un meuble fermé sur le mur de droite**, hors du parcours des visiteurs. **L'imprimante près de la sortie** : l'ex-roi récupère son ticket en partant.
-- **Parcours** : on entre en bas à droite, on remonte l'allée centrale vers le trône, on se place sur un tapis ou dans la file, et on ressort par la même porte en passant devant l'imprimante.
+- **Le trône au fond, au centre**, face à l'entrée : c'est la première chose qu'on voit en entrant. L'écran principal est juste au-dessus (de 1,9 m à 4,15 m), pour que le roi et son nom soient vus ensemble.
+- **Le piédestal à 1,65 m du trône**, face à lui : assez près pour un vrai face-à-face, assez loin pour que les épées en mousse ne touchent pas l'écran ni le trône.
+- **Les projecteurs au plafond à 4,1 m** : le faisceau du projecteur 1 passe à environ 3,6 m au-dessus du piédestal, donc même une épée levée ne fait pas d'ombre sur l'écran.
+- **Les tapis de chaque côté du piédestal** (2 × 2 m chacun) : la foule entoure le duel, chaque camp de son côté.
+- **La file des challengers dans l'allée centrale**, derrière le piédestal ; les épées sont accrochées juste à côté.
+- **Les haut-parleurs dans les coins du fond** et **le caisson de basses derrière le trône** : le son vient du trône, comme si le pouvoir parlait.
+- **L'affiche d'accueil à l'entrée** : on se connecte au WiFi et on lit les règles avant d'entrer.
+- **La régie dans un meuble fermé sur le mur de droite**, hors du parcours des visiteurs. Le routeur WiFi est posé sur le dessus du meuble : sa portée couvre facilement toute la salle de 8 m × 7 m.
+- **Parcours** : on entre en bas à droite, on scanne le code WiFi, on remonte l'allée vers le trône, on se place sur un tapis ou dans la file, et on ressort par la même porte.
 
 ## Budget
 
@@ -247,52 +190,40 @@ Estimation en dollars canadiens, taxes non incluses. Les prix sont indicatifs et
 
 | Catégorie | Élément | Qté | Prix unitaire | Total |
 | -- | -- | --: | --: | --: |
-| Projection | Projecteur laser 5 000 lumens, WUXGA, objectif zoom 1,0–1,6 | 2 | 2 800 $ | 5 600 $ |
+| Projection | Projecteur 4 000 lumens, WUXGA, objectif zoom 1,0–1,6 | 2 | 1 800 $ | 3 600 $ |
 | Projection | Support de plafond pour projecteur | 2 | 90 $ | 180 $ |
 | Projection | Toile de projection tendue 4 × 2,25 m | 2 | 350 $ | 700 $ |
-| Ordinateur | PC de régie (Core i7, RTX 4070, 32 Go RAM, 3 sorties vidéo) | 1 | 2 800 $ | 2 800 $ |
+| Ordinateur | PC de régie (Core i5, RTX 3050, 16 Go RAM, 3 sorties vidéo) | 1 | 1 300 $ | 1 300 $ |
 | Ordinateur | Moniteur de contrôle 24 po | 1 | 200 $ | 200 $ |
-| Capteurs | Kinect Azure (ou Orbbec Femto Bolt) | 1 | 650 $ | 650 $ |
-| Contrôleurs | Arduino Uno R4 | 2 | 40 $ | 80 $ |
-| Capteurs | Bouton d'arcade lumineux 60 mm | 6 | 8 $ | 48 $ |
-| Capteurs | Capteur de force FSR 38 mm (siège, piédestal) | 2 | 25 $ | 50 $ |
-| Capteurs | Dalle de pression 50 × 50 cm (interrupteur de sol) | 32 | 20 $ | 640 $ |
-| Contrôleurs | M5Stack ATOM PoE | 2 | 55 $ | 110 $ |
-| Contrôleurs | Module d'entrées MCP23017 (16 entrées) | 2 | 8 $ | 16 $ |
-| Réseau | Switch Gigabit PoE 8 ports | 1 | 140 $ | 140 $ |
-| Éclairage | Projecteur de découpe LED RGBW, DMX | 1 | 450 $ | 450 $ |
-| Éclairage | Interface USB-DMX (Enttec DMX USB Pro) | 1 | 260 $ | 260 $ |
-| Son | Interface audio USB 8 sorties (ex. Behringer UMC1820) | 1 | 400 $ | 400 $ |
-| Son | Haut-parleur actif 8 po | 4 | 350 $ | 1 400 $ |
-| Son | Pied ou support mural de haut-parleur | 4 | 40 $ | 160 $ |
-| Son | Transducteur tactile (bass shaker) sous le siège | 1 | 120 $ | 120 $ |
-| Son | Amplificateur 100 W pour le transducteur | 1 | 130 $ | 130 $ |
-| Impression | Imprimante thermique de reçus 80 mm USB | 1 | 350 $ | 350 $ |
-| Impression | Papier thermique 80 mm (boîte de 50 rouleaux) | 1 | 60 $ | 60 $ |
+| Réseau | Routeur WiFi 6 bi-bande | 1 | 150 $ | 150 $ |
+| Téléphones | Téléphone Android de prêt (visiteurs sans téléphone) | 1 | 200 $ | 200 $ |
+| Téléphones | Support de téléphone (accoudoir et console) | 2 | 25 $ | 50 $ |
+| Son | Interface audio USB 2 sorties | 1 | 180 $ | 180 $ |
+| Son | Haut-parleur actif 8 po | 2 | 350 $ | 700 $ |
+| Son | Pied ou support mural de haut-parleur | 2 | 40 $ | 80 $ |
+| Son | Caisson de basses actif 10 po | 1 | 400 $ | 400 $ |
+| Éclairage | Projecteur LED blanc chaud 50 W avec pince de plafond | 1 | 150 $ | 150 $ |
+| Accessoires | Épée en mousse (type GN), dont 1 de rechange | 3 | 60 $ | 180 $ |
+| Accessoires | Crochets muraux pour les épées | 1 | 20 $ | 20 $ |
 | Décor | Trône (fabrication MDF, peinture, rembourrage) | 1 | 450 $ | 450 $ |
-| Décor | Piédestal avec console (fabrication) | 1 | 150 $ | 150 $ |
+| Décor | Piédestal avec console à 1,1 m (fabrication) | 1 | 150 $ | 150 $ |
+| Décor | Tapis 2 × 2 m (un doré, un rouge) | 2 | 120 $ | 240 $ |
+| Impression | Plaques des codes QR et affiche d'accueil | 1 | 60 $ | 60 $ |
 | Câbles | HDMI actif fibre 15 m | 2 | 70 $ | 140 $ |
-| Câbles | XLR 15 m | 5 | 30 $ | 150 $ |
-| Câbles | Ethernet Cat6 (2 × 10 m, 1 × 2 m) | 3 | 15 $ | 45 $ |
-| Câbles | Rallonge USB active 10 m (Arduino) | 2 | 35 $ | 70 $ |
-| Câbles | Rallonge USB-C 3.2 active 10 m (Kinect) | 1 | 90 $ | 90 $ |
-| Câbles | Câble DMX 3 broches 15 m | 1 | 30 $ | 30 $ |
-| Câbles | Câble USB imprimante 5 m | 1 | 12 $ | 12 $ |
-| Câbles | Rallonges électriques et barres d'alimentation | 6 | 25 $ | 150 $ |
+| Câbles | XLR 15 m | 3 | 30 $ | 90 $ |
+| Câbles | Ethernet Cat6 2 m (PC → routeur) | 1 | 10 $ | 10 $ |
+| Câbles | Rallonges électriques et barres d'alimentation | 5 | 25 $ | 125 $ |
 | Câbles | Ruban de sol et passe-câbles | 1 | 80 $ | 80 $ |
-| | **Sous-total matériel** | | | **15 911 $** |
+| | **Sous-total matériel** | | | **9 435 $** |
 
 ### Logiciels
 
 | Logiciel | Coût |
 | -- | --: |
-| Unity Personal | 0 $ |
-| TouchDesigner Non-Commercial | 0 $ |
-| OBS Studio | 0 $ |
-| QLC+ | 0 $ |
-| Pure Data | 0 $ |
-| Arduino IDE | 0 $ |
-| Python + python-escpos | 0 $ |
+| Node.js, Express, Socket.IO | 0 $ |
+| p5.js, Howler.js | 0 $ |
+| Google Chrome (mode kiosque) | 0 $ |
+| Visual Studio Code | 0 $ |
 | Reaper (licence réduite) | 85 $ |
 | Suite Adobe (licence du collège) | 0 $ |
 | **Sous-total logiciels** | **85 $** |
@@ -301,28 +232,26 @@ Estimation en dollars canadiens, taxes non incluses. Les prix sont indicatifs et
 
 | Tâche | Heures | Taux horaire | Total |
 | -- | --: | --: | --: |
-| Programmation (Unity, Arduino, intégration) | 120 h | 25 $ | 3 000 $ |
-| Production visuelle et sonore | 40 h | 25 $ | 1 000 $ |
-| Fabrication et montage | 30 h | 25 $ | 750 $ |
-| **Sous-total développement** | | | **4 750 $** |
+| Programmation (serveur, pages téléphone, écran et Galerie) | 70 h | 25 $ | 1 750 $ |
+| Production visuelle et sonore | 30 h | 25 $ | 750 $ |
+| Fabrication et montage | 25 h | 25 $ | 625 $ |
+| **Sous-total développement** | | | **3 125 $** |
 
 ### Maintenance (pour un mois d'exposition)
 
 | Élément | Qté | Prix unitaire | Total |
 | -- | --: | --: | --: |
-| Boutons d'arcade de rechange | 6 | 8 $ | 48 $ |
-| Papier thermique supplémentaire (boîte) | 1 | 60 $ | 60 $ |
-| Remplacement de dalles de pression | 4 | 20 $ | 80 $ |
-| **Sous-total maintenance** | | | **188 $** |
+| Épée en mousse de remplacement | 2 | 60 $ | 120 $ |
+| Pile et câble de recharge pour le téléphone de prêt | 1 | 30 $ | 30 $ |
+| **Sous-total maintenance** | | | **150 $** |
 
 ### Total
 
 | Poste | Montant |
 | -- | --: |
-| Matériel | 15 911 $ |
+| Matériel | 9 435 $ |
 | Logiciels | 85 $ |
-| Développement | 4 750 $ |
-| Maintenance | 188 $ |
-| Imprévus (10 %) | 2 093 $ |
-| **Total estimé** | **23 027 $** |
-
+| Développement | 3 125 $ |
+| Maintenance | 150 $ |
+| Imprévus (10 %) | 1 280 $ |
+| **Total estimé** | **14 075 $** |

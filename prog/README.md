@@ -4,222 +4,176 @@
 
 | Outil évalué | Points forts | Limites pour Dethrône | Décision |
 | -- | -- | -- | -- |
-| **Unity** (C#) | Machine à états claire, animations 2D, particules, son 7.1, OSC et Spout disponibles | Moins pratique pour traiter l'image de la caméra | **Retenu** pour la logique du jeu, l'affichage et le son |
-| **TouchDesigner** | Excellent pour la Kinect, MediaPipe et l'image en temps réel | Logique de jeu complexe difficile à organiser ; version gratuite limitée à 1280 × 1280 | **Retenu** seulement pour la caméra |
-| **Godot** | Léger et gratuit | Moins d'exemples avec Spout et la Kinect | Écarté |
-| **Pure Data** | Simple pour lire le port série | Pas fait pour l'affichage | **Retenu** comme pont entre les Arduino et Unity |
+| **Node.js + Socket.IO** (JavaScript) | Un seul langage pour le serveur, les téléphones et les écrans ; les téléphones n'ont qu'à ouvrir une page web ; temps réel simple avec Socket.IO | Il faut gérer soi-même l'état du jeu | **Retenu** |
+| **p5.js** | Dessin et animation 2D faciles dans une page web, export d'image pour le blason | Moins performant pour la 3D (pas nécessaire ici) | **Retenu** pour l'écran, la Galerie et le blason |
+| **Unity** | Très bon pour l'affichage et le son | Il faudrait quand même un serveur web pour les téléphones : deux programmes à faire communiquer | Écarté pour gagner du temps |
+| **TouchDesigner** | Excellent pour l'image en temps réel | Pas adapté à une logique de jeu avec file d'attente et téléphones | Écarté |
 
-Chaque logiciel fait une seule tâche, et ils communiquent par **OSC** et **Spout**, comme dans l'infrastructure standard du cours.
+Tout le projet tient dans **un seul dossier de code JavaScript**, ce qui le rend réalisable dans le temps du cours.
 
 ## Architecture
 
-```mermaid
-flowchart TB
-    subgraph Entrées
-        OSCIN["OscReceiver<br/>(port 9000)"]
-    end
-    subgraph Unity
-        GM["GameManager<br/>machine à états"]
-        DUEL["DuelManager<br/>gestes, manches, Faveur"]
-        COUR["CourManager<br/>compte des Fidèles et Rebelles"]
-        DEC["DecretManager<br/>décrets après 3 victoires"]
-        IA["RoiFantome<br/>IA quand le trône est vide"]
-        BLA["BlasonGenerator<br/>artéfact"]
-        AUD["AudioDirector<br/>son 7.1 + LFE"]
-        UI["Écran principal<br/>et Galerie"]
-    end
-    subgraph Sorties
-        OSCOUT["OscSender<br/>QLC+, TouchDesigner,<br/>Pure Data, impression"]
-        SP["Spout<br/>vers OBS"]
-    end
-    OSCIN --> GM
-    GM --> DUEL & COUR & DEC & IA & BLA
-    COUR --> DUEL
-    DEC --> DUEL
-    GM --> AUD & UI
-    BLA --> UI
-    UI --> SP
-    GM --> OSCOUT
+```text
+dethrone-jeu/
+├── serveur.js          ← serveur Node.js : état du jeu, duel, file, Socket.IO
+├── public/
+│   ├── trone.html      ← page ouverte par le code QR du trône
+│   ├── defi.html       ← page ouverte par le code QR du piédestal
+│   ├── telephone.js    ← logique commune des pages téléphone
+│   ├── ecran.html      ← écran principal (projecteur 1)
+│   ├── ecran.js        ← animations p5.js, décomptes, sons, blason
+│   ├── galerie.html    ← Galerie des Règnes (projecteur 2)
+│   ├── sons/           ← fichiers MP3
+│   └── images/         ← couronnes, icônes des gestes
+└── galerie/            ← blasons sauvegardés en PNG
 ```
 
-| Script | Rôle |
+```mermaid
+flowchart LR
+    subgraph Serveur["serveur.js (Node.js)"]
+        ETAT["État du jeu<br/>roi · victoires de suite · file"]
+        DUEL["Duel<br/>3 manches · décret"]
+        MIN["Minuteries<br/>préparation 45 s · décomptes"]
+    end
+    T1["trone.html"] <-->|Socket.IO| ETAT
+    T2["defi.html"] <-->|Socket.IO| ETAT
+    ETAT --> DUEL
+    MIN --> DUEL
+    DUEL -->|"manche · verdict"| E["ecran.html<br/>p5.js + Howler.js"]
+    ETAT -->|etat| E
+    E -->|"PNG du blason"| Serveur
+    Serveur -->|blason| G["galerie.html"]
+```
+
+| Fichier | Rôle |
 | -- | -- |
-| `GameManager` | Machine à états : passe d'une scène à l'autre selon les déclencheurs du scénario |
-| `DuelManager` | Reçoit les gestes, compare, compte les manches, applique la Faveur et les décrets |
-| `CourManager` | Garde le nombre de Fidèles et de Rebelles ; donne le camp majoritaire au début de chaque manche |
-| `DecretManager` | Débloque un décret toutes les 3 victoires et l'applique au duel suivant |
-| `RoiFantome` | Choisit les gestes de l'IA quand le trône est vide |
-| `BlasonGenerator` | Assemble le blason à partir des données du règne, l'enregistre en PNG et l'ajoute à la Galerie |
-| `AudioDirector` | Ambiances, sons évènementiels, volume de la foule, canal LFE pour le transducteur |
-| `OscReceiver` / `OscSender` | Communication OSC (bibliothèque extOSC) |
+| `serveur.js` | Garde l'état du jeu, gère la file d'attente, lance les minuteries, calcule le résultat de chaque manche, compte les victoires de suite, sauvegarde les blasons |
+| `trone.html` / `defi.html` | Pseudo, place dans la file, choix des 3 gestes, geste de la manche en cours, résultat, décret (roi), « Quitter le trône » (roi), blason à enregistrer |
+| `ecran.html` | Affiche la scène en cours, joue les sons, dessine et envoie le blason |
+| `galerie.html` | Affiche tous les blasons et ajoute les nouveaux en direct |
 
 ## Machine à états
 
-Les états correspondent aux scènes du [scénario](/scenario/).
+Les états correspondent aux scènes du [scénario](/scenario/). Toutes les transitions viennent des téléphones ou des minuteries du serveur.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> RoiFantome
-    RoiFantome --> Couronnement: /trone/assis = 1
-    RoiFantome --> ChoixSecret: /piedestal/present = 1
-    Couronnement --> Regne: photo prise
-    Couronnement --> RoiFantome: /trone/assis = 0
-    Regne --> ChoixSecret: /piedestal/present = 1
-    Regne --> Detronement: /trone/assis = 0
-    ChoixSecret --> Revelation: les deux ont choisi ou 5 s
-    ChoixSecret --> FinDuel: /piedestal/present = 0 (forfait)
-    Revelation --> ChoixSecret: égalité ou duel non terminé
-    Revelation --> FinDuel: 2 manches gagnées
-    FinDuel --> Regne: le roi gagne
-    FinDuel --> Detronement: le challenger gagne et le roi se lève
-    Detronement --> Couronnement: /trone/assis = 1
-    Detronement --> RoiFantome: 20 s sans personne
+    [*] --> TroneLibre
+    TroneLibre --> Couronnement: rejoindre (trône)
+    Couronnement --> Regne: pseudo validé
+    Couronnement --> TroneLibre: 60 s sans pseudo
+    Regne --> Preparation: challenger en tête de file
+    Regne --> Blason: quitter (roi)
+    Preparation --> Duel: les 2 ont envoyé leurs gestes
+    Preparation --> Regne: le challenger n'a pas validé
+    Preparation --> Verdict: le roi n'a pas validé (forfait)
+    Duel --> Verdict: 3 manches jouées
+    Verdict --> Regne: le roi gagne ou égalité
+    Verdict --> Blason: le challenger gagne
+    Blason --> Couronnement: le gagnant devient roi
+    Blason --> TroneLibre: personne ne règne
 ```
 
 ## Extraits de code
 
-### Résolution d'une manche (Unity, C#)
+### Résultat d'un duel en 3 manches (serveur)
 
-```csharp
-public enum Geste { Attaque = 0, Parade = 1, Feinte = 2 }
-public enum Resultat { Egalite, RoiGagne, ChallengerGagne }
+```javascript
+// Parade bat Attaque, Feinte bat Parade, Attaque bat Feinte
+const BAT = { Parade: "Attaque", Feinte: "Parade", Attaque: "Feinte" };
 
-public static class Duel
-{
-    // Parade bat Attaque, Feinte bat Parade, Attaque bat Feinte
-    static bool Bat(Geste a, Geste b) =>
-        (a == Geste.Parade && b == Geste.Attaque) ||
-        (a == Geste.Feinte && b == Geste.Parade) ||
-        (a == Geste.Attaque && b == Geste.Feinte);
+function resultatManche(gesteRoi, gesteChallenger) {
+  if (gesteRoi === gesteChallenger) return "egalite";
+  return BAT[gesteRoi] === gesteChallenger ? "roi" : "challenger";
+}
 
-    public static Resultat Comparer(Geste roi, Geste challenger)
-    {
-        if (roi == challenger) return Resultat.Egalite;
-        return Bat(roi, challenger) ? Resultat.RoiGagne : Resultat.ChallengerGagne;
+function resultatDuel(gestesRoi, gestesChallenger) {
+  const manches = gestesRoi.map((g, i) => resultatManche(g, gestesChallenger[i]));
+  const pointsRoi = manches.filter(m => m === "roi").length;
+  const pointsChallenger = manches.filter(m => m === "challenger").length;
+  // En cas d'égalité, le roi garde son trône
+  const gagnant = pointsChallenger > pointsRoi ? "challenger" : "roi";
+  return { manches, pointsRoi, pointsChallenger, gagnant };
+}
+```
+
+### Rejoindre le trône ou la file (serveur)
+
+```javascript
+const etat = { roi: null, victoiresDeSuite: 0, debutRegne: null, file: [], scene: "TroneLibre" };
+
+io.on("connection", (socket) => {
+  socket.on("rejoindre", ({ role, pseudo }) => {
+    if (role === "trone") {
+      if (etat.roi) return socket.emit("refus", "Le trône est déjà occupé : scanne le code du piédestal.");
+      // Le premier téléphone qui valide prend le trône.
+      // Si deux personnes arrivent en même temps, la règle affichée (le plus âgé passe en premier)
+      // est appliquée par les joueurs avant de scanner.
+      etat.roi = { id: socket.id, pseudo };
+      etat.victoiresDeSuite = 0;
+      etat.debutRegne = Date.now();
+      changerScene("Couronnement");
+    } else if (role === "defi") {
+      if (!etat.roi) return socket.emit("refus", "Le trône est libre : va t'asseoir !");
+      etat.file.push({ id: socket.id, pseudo });
+      if (etat.scene === "Regne") lancerPreparation();
     }
-}
+    io.emit("etat", etatPublic());   // met à jour l'écran et tous les téléphones
+  });
+});
 ```
 
-### Faveur de la Cour (Unity, C#)
+### Choix des 3 gestes (page du téléphone)
 
-```csharp
-// Appelé au début de chaque manche
-public Camp CampMajoritaire()
-{
-    if (decretSilenceActif) return Camp.Aucun;          // décret « Silence »
-    if (fideles > rebelles) return Camp.Fideles;        // Faveur pour le roi
-    if (rebelles > fideles) return Camp.Rebelles;       // Faveur pour le challenger
-    return Camp.Aucun;                                  // égalité : personne
+```javascript
+const gestes = [null, null, null];
+let gesteInterdit = null;   // rempli si le roi a imposé un décret
+
+socket.on("preparer", ({ interdit }) => {
+  gesteInterdit = interdit;
+  document.querySelectorAll(`[data-geste="${interdit}"]`).forEach(b => b.disabled = true);
+  afficher("ecran-gestes");
+});
+
+function choisir(manche, geste) {
+  if (geste === gesteInterdit) return;
+  gestes[manche] = geste;
+  majCases();                                  // affiche l'icône dans la case de la manche
+  boutonValider.disabled = gestes.includes(null);
 }
 
-// Appelé après la révélation, si un joueur perd la manche
-bool FaveurAnnuleLaManche(Joueur perdant)
-{
-    bool protege = perdant.Camp == campDeLaManche && !perdant.FaveurUtilisee;
-    if (protege) perdant.FaveurUtilisee = true;          // une fois par duel
-    return protege;
-}
+boutonValider.onclick = () => {
+  socket.emit("gestes", gestes);
+  afficher("ecran-attente");                   // « En attente de l'adversaire »
+};
+
+socket.on("manche", ({ numero, gesteAFaire }) => {
+  texteGeste.textContent = gesteAFaire;        // en très grand, pour le duel à l'épée
+});
 ```
 
-### Arduino du trône (boutons + capteur de siège)
+### Le duel rythmé (serveur)
 
-```cpp
-#include <PacketSerial.h>   // encodage SLIP
+```javascript
+const attendre = (ms) => new Promise(r => setTimeout(r, ms));
 
-SLIPPacketSerial slip;
-const int BOUTONS[3] = {2, 3, 4};    // Attaque, Parade, Feinte
-const int LEDS[3]    = {5, 6, 9};
-const int FSR        = A0;
-const int SEUIL_ASSIS = 400;
-
-bool etatBouton[3];
-bool assis = false;
-
-void setup() {
-  slip.begin(115200);
-  slip.setPacketHandler(&recevoir);   // messages pour les LED
-  for (int i = 0; i < 3; i++) {
-    pinMode(BOUTONS[i], INPUT_PULLUP);
-    pinMode(LEDS[i], OUTPUT);
+async function jouerDuel(gestesRoi, gestesChallenger) {
+  const challenger = etat.file[0];                                   // premier de la file
+  const res = resultatDuel(gestesRoi, gestesChallenger);
+  for (let i = 0; i < 3; i++) {
+    io.emit("manche", { numero: i + 1, etape: "decompte" });          // « MANCHE 1 », 3… 2… 1…
+    io.to(etat.roi.id).emit("manche", { numero: i + 1, gesteAFaire: gestesRoi[i] });
+    io.to(challenger.id).emit("manche", { numero: i + 1, gesteAFaire: gestesChallenger[i] });
+    await attendre(4000);
+    io.emit("manche", { numero: i + 1, etape: "frappez" });           // les joueurs frappent
+    await attendre(2000);
+    io.emit("manche", { numero: i + 1, etape: "resultat",
+      roi: gestesRoi[i], challenger: gestesChallenger[i], gagnant: res.manches[i] });
+    await attendre(3000);
   }
-}
-
-void loop() {
-  for (int i = 0; i < 3; i++) {
-    bool appuye = digitalRead(BOUTONS[i]) == LOW;
-    if (appuye && !etatBouton[i]) envoyer('B', i);   // nouveau clic
-    etatBouton[i] = appuye;
-  }
-  bool maintenantAssis = analogRead(FSR) > SEUIL_ASSIS;
-  if (maintenantAssis != assis) {
-    assis = maintenantAssis;
-    envoyer('S', assis);
-  }
-  slip.update();
-  delay(10);
-}
-
-void envoyer(char type, uint8_t valeur) {
-  uint8_t msg[2] = {(uint8_t)type, valeur};
-  slip.send(msg, 2);   // Pure Data décode et renvoie en OSC : /trone/bouton ou /trone/assis
-}
-
-void recevoir(const uint8_t* data, size_t taille) {
-  if (taille == 2 && data[0] == 'L') {
-    for (int i = 0; i < 3; i++) digitalWrite(LEDS[i], data[1]);   // LED « prêt »
-  }
+  terminerDuel(res);
 }
 ```
-
-### ATOM PoE d'un tapis (16 dalles)
-
-```cpp
-#include <SPI.h>
-#include <Ethernet.h>          // puce W5500 de l'ATOM PoE
-#include <EthernetUdp.h>
-#include <Wire.h>
-#include <Adafruit_MCP23X17.h>
-#include <OSCMessage.h>
-
-Adafruit_MCP23X17 mcp;
-EthernetUDP udp;
-byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0x00, 0x21};
-const IPAddress MOI(192, 168, 1, 21);     // 192.168.1.22 sur l'ATOM des Rebelles
-const IPAddress PC(192, 168, 1, 10);
-const int PORT = 9000;
-const char* ADRESSE = "/cour/fideles";   // "/cour/rebelles" sur l'autre ATOM
-int dernierCompte = -1;
-
-void setup() {
-  SPI.begin(22, 23, 33, 19);               // broches du W5500 de l'ATOM PoE
-  Ethernet.init(19);
-  Ethernet.begin(mac, MOI);
-  udp.begin(8000);
-  Wire.begin(26, 32);                      // port Grove → MCP23017
-  mcp.begin_I2C(0x20, &Wire);
-  for (int i = 0; i < 16; i++) mcp.pinMode(i, INPUT_PULLUP);
-}
-
-void loop() {
-  uint16_t dalles = ~mcp.readGPIOAB();                 // 1 = dalle appuyée
-  int compte = __builtin_popcount(dalles);
-  if (compte != dernierCompte) {                       // envoie seulement les changements
-    OSCMessage msg(ADRESSE);
-    msg.add(compte);
-    udp.beginPacket(PC, PORT); msg.send(udp); udp.endPacket();
-    dernierCompte = compte;
-  }
-  delay(50);
-}
-```
-
-## Le Roi Fantôme (IA)
-
-Quand le trône est vide, le Roi Fantôme joue contre le challenger :
-
-- Il retient les 5 derniers gestes de tous les joueurs.
-- Il joue le geste qui bat le geste le plus fréquent, avec 60 % de chances ; le reste du temps, il joue au hasard.
-- Il est donc battable, mais il punit les joueurs qui répètent toujours le même geste.
 
 ## Démo de faisabilité
 
@@ -227,16 +181,16 @@ Objectif : tester le plus d'éléments possible, sans les approfondir, pour vali
 
 | À valider | Test à réaliser | Résultat attendu |
 | -- | -- | -- |
-| **Environnement de développement** | Petite scène Unity avec la machine à états et la résolution du duel au clavier | Le duel complet fonctionne, avec la révélation lente |
-| **Système de capture : boutons et siège** | Arduino + 3 boutons + FSR → Pure Data → Unity | Chaque clic et le passage assis / levé arrivent dans Unity en OSC |
-| **Système de capture : tapis** | 1 ATOM PoE + MCP23017 + 4 dalles → Unity | Le compte de personnes s'affiche dans Unity en temps réel |
-| **Système de capture : caméra** | Kinect → TouchDesigner (MediaPipe) → Spout → Unity | Une photo du visage est prise à la demande et affichée dans Unity |
-| **Projection** | Unity → Spout → OBS → 2 sorties plein écran | Les deux écrans s'affichent correctement |
-| **Lumière** | Unity → OSC → QLC+ → spot DMX | Le spot change d'intensité et de couleur selon la scène |
-| **Impression** | Unity → OSC → script Python → imprimante thermique | Un blason test s'imprime en moins de 5 secondes |
-| **Esthétique visuelle** | Cartes, couronne, cadre et fond intégrés dans Unity | Cohérence entre les éléments et avec l'intention esthétique |
-| **Esthétique sonore** | 1 minute d'ambiance (fond) + 5 sons évènementiels (figures) dans Unity | Les sons sont cohérents ; le transducteur fait vibrer le siège |
-| **Hypothèse d'usage** | Test avec 4 ou 5 personnes : duel, tapis, changement de camp | Les règles sont comprises sans explication en moins d'une minute |
+| **Environnement de développement** | Serveur Node.js + Socket.IO avec deux pages téléphone et une page écran | Un clic sur un téléphone apparaît sur l'écran en moins d'une demi-seconde |
+| **Codes QR et WiFi** | Routeur local, code QR du WiFi et code QR du trône | Un iPhone et un Android ouvrent la page du jeu en scannant les deux codes |
+| **Mécanique de duel** | Choix des 3 gestes sur deux téléphones, résultat calculé par le serveur | Le bon gagnant, l'égalité qui profite au roi et le compteur de victoires de suite fonctionnent |
+| **File d'attente** | 4 téléphones scannent le code du piédestal | L'ordre de passage est le même à l'écran et sur chaque téléphone |
+| **Duel rythmé** | Décompte « 3, 2, 1, FRAPPEZ ! » avec deux joueurs et des épées en mousse | Les deux joueurs frappent en même temps et comprennent le résultat affiché |
+| **Projection** | Deux fenêtres Chrome en mode kiosque sur deux sorties vidéo | Écran principal et Galerie s'affichent en plein écran au démarrage |
+| **Blason génératif** | p5.js génère un blason à partir de fausses données de règne | Deux pseudos différents donnent deux blasons différents ; le PNG s'enregistre sur un téléphone |
+| **Esthétique visuelle** | Couronne, icônes des gestes, interface du téléphone et fond intégrés dans les pages | Cohérence entre les éléments et avec l'intention esthétique |
+| **Esthétique sonore** | 1 minute d'ambiance (fond) + 5 sons évènementiels (figures) avec Howler.js | Les sons sont cohérents ; le caisson de basses se ressent sur le trône |
+| **Hypothèse d'usage** | Test avec 4 ou 5 personnes : scan, choix des gestes, duel à l'épée, file | Les règles sont comprises sans explication en moins d'une minute |
 
 <iframe width="560" height="315"
   src="https://www.youtube.com/embed/ABWCq8j8qys?si=prydXi1QfvX2tqLw"
