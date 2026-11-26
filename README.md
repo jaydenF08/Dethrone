@@ -1,5 +1,4 @@
-# Dethrône
-
+# Dethrone
 Ce site présente la faisabilité d'un *concept d'expérience multimédia* présenté dans le cours *582-501MO Conception d'une expérience multimédia* au collège Montmorency enseigné par Thomas O Fredericks.
 
 > « Inquiète est la tête qui porte la couronne. »
@@ -7,7 +6,9 @@ Ce site présente la faisabilité d'un *concept d'expérience multimédia* prés
 
 ## Équipe
 
-- Adam Ben Fradj : tech, prog, esthétique
+- Ben Fradj, Adam (comme vous voulez être nommé) : rôle (tech, prog, esthétique)
+- Sadki, Mohamed Ali (comme vous voulez être nommé) : rôle (tech, prog, esthétique)
+- Jayden Ferdinand
 
 ## Résumé du projet
 
