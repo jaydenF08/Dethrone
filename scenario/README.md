@@ -24,6 +24,17 @@ Le scénarimage doit inclure des annotations ou des visuels montrant les répons
 
 ![Scène 1 : Le trône libre](img/scene1.svg)
 
+**Ce que l’interacteur voit :**
+- Le trône vide, éclairé par le spot.
+- Sur le grand écran : « Le trône est libre. Assieds-toi et scanne le code. »
+- La règle « Si vous êtes deux : le plus âgé a la priorité ».
+- Le code QR sur la plaque dorée de l'accoudoir.
+- Sur le mur de gauche, la Galerie des Règnes qui défile.
+
+**Ce que l’interacteur entend :**
+- Une ambiance grave et réverbérante, comme une grande salle de pierre vide.
+- Un tambour lointain, de temps en temps.
+
 | Verbe d’action | Condition de déclenchement | Effet visuel | Effet sonore | Effet interactif |
 |---------------|----------------------------|--------------|--------------|------------------|
 | **Observer** | Personne n'est sur le trône | « Le trône est libre » à l'écran | Ambiance de salle vide | Le visiteur comprend qu'il peut prendre le trône |
@@ -36,6 +47,14 @@ Le scénarimage doit inclure des annotations ou des visuels montrant les répons
 
 ![Scène 2 : Le couronnement](img/scene2.svg)
 
+**Ce que l’interacteur voit :**
+- Sur son téléphone : le champ « Ton pseudo » et le bouton « Prendre la couronne ».
+- Sur le grand écran : « UN NOUVEAU ROI », puis son pseudo en lettres dorées sous une couronne vide.
+
+**Ce que l’interacteur entend :**
+- Une fanfare de cuivres grave.
+- Un coup de gong quand il valide son pseudo.
+
 | Verbe d’action | Condition de déclenchement | Effet visuel | Effet sonore | Effet interactif |
 |---------------|----------------------------|--------------|--------------|------------------|
 | **Écrire** | Le visiteur entre son pseudo sur son téléphone | Champ « Ton pseudo » | Aucun | Il choisit le nom affiché à l'écran |
@@ -46,6 +65,17 @@ Le scénarimage doit inclure des annotations ou des visuels montrant les répons
 ## Scène 3 : Le règne et la file
 
 ![Scène 3 : Le règne et la file](img/scene3.svg)
+
+**Ce que l’interacteur voit :**
+- Sur le grand écran : le pseudo du roi, sa couronne (une pierre par victoire de suite) et le chronomètre de son règne.
+- À droite de l'écran, la file des challengers.
+- Sur le téléphone d'un challenger : sa place dans la file.
+- Sur le téléphone du roi : ses victoires de suite et, après 3 victoires, le bouton « Imposer un décret ».
+- Au sol, le tapis doré des Fidèles et le tapis rouge des Rebelles.
+
+**Ce que l’interacteur entend :**
+- L'ambiance de salle, avec des murmures de foule.
+- Un coup de tambour quand un challenger s'inscrit.
 
 | Verbe d’action | Condition de déclenchement | Effet visuel | Effet sonore | Effet interactif |
 |---------------|----------------------------|--------------|--------------|------------------|
@@ -61,6 +91,15 @@ Le scénarimage doit inclure des annotations ou des visuels montrant les répons
 
 ![Scène 4 : La préparation](img/scene4.svg)
 
+**Ce que l’interacteur voit :**
+- Sur son téléphone : 3 cases (Manche 1, 2, 3), les boutons Attaque, Parade et Feinte, puis « Valider ». Un geste interdit par décret est grisé.
+- Sur le grand écran : le roi à gauche, le challenger à droite, un décompte de 45 secondes et « PRÊT » sous chaque joueur qui a validé.
+- Les gestes choisis ne sont jamais affichés à l'écran.
+
+**Ce que l’interacteur entend :**
+- Un battement de cœur qui accélère à la fin du décompte.
+- Un son de verrou quand un joueur valide.
+
 | Verbe d’action | Condition de déclenchement | Effet visuel | Effet sonore | Effet interactif |
 |---------------|----------------------------|--------------|--------------|------------------|
 | **Choisir** | Le challenger est en tête de file | Les deux pseudos face à face et un décompte de 45 s | Battement de cœur | Chacun choisit ses 3 gestes en secret sur son téléphone |
@@ -73,6 +112,16 @@ Le scénarimage doit inclure des annotations ou des visuels montrant les répons
 ## Scène 5 : Le duel à l'épée
 
 ![Scène 5 : Le duel à l'épée](img/scene5.svg)
+
+**Ce que l’interacteur voit :**
+- Les deux épées en mousse, et l'adversaire en face.
+- Sur le grand écran : « MANCHE 1 », puis « 3… 2… 1… FRAPPEZ ! » en très grandes lettres.
+- Sur son téléphone, posé sur le support : le geste à faire pour la manche en cours.
+- Après chaque coup : les deux gestes, le gagnant de la manche et le score.
+
+**Ce que l’interacteur entend :**
+- Trois coups de tambour de plus en plus forts, puis un grand impact sur « FRAPPEZ ! ».
+- Un choc d'épées et la clameur de la foule.
 
 | Verbe d’action | Condition de déclenchement | Effet visuel | Effet sonore | Effet interactif |
 |---------------|----------------------------|--------------|--------------|------------------|
@@ -87,6 +136,15 @@ Le scénarimage doit inclure des annotations ou des visuels montrant les répons
 
 ![Scène 6 : Le verdict](img/scene6.svg)
 
+**Ce que l’interacteur voit :**
+- Sur le grand écran : « LE ROI RÈGNE » et une pierre de plus sur la couronne, ou « LE ROI EST TOMBÉ » et la couronne qui se brise.
+- Le score final du duel.
+- Sur les téléphones : « Victoire ! » ou « Défaite ».
+
+**Ce que l’interacteur entend :**
+- Une fanfare courte si le roi gagne.
+- Une cymbale, une cloche et une grande clameur si le roi tombe.
+
 | Verbe d’action | Condition de déclenchement | Effet visuel | Effet sonore | Effet interactif |
 |---------------|----------------------------|--------------|--------------|------------------|
 | **Gagner** | Le roi gagne ou il y a égalité | « LE ROI RÈGNE », une pierre de plus sur la couronne | Fanfare | +1 victoire de suite : retour à la scène 3 |
@@ -98,6 +156,16 @@ Le scénarimage doit inclure des annotations ou des visuels montrant les répons
 ## Scène 7 : Le blason
 
 ![Scène 7 : Le blason](img/scene7.svg)
+
+**Ce que l’interacteur voit :**
+- Le blason de l'ex-roi qui se construit sur le grand écran : son pseudo, sa couronne et ses pierres, son geste préféré.
+- Le blason qui glisse vers le mur de gauche et rejoint la Galerie des Règnes.
+- Sur le téléphone de l'ex-roi : son blason et le bouton « Enregistrer ».
+- Puis « [Pseudo] PREND LE TRÔNE » ou « Le trône est libre ».
+
+**Ce que l’interacteur entend :**
+- Un chœur grave pendant la construction du blason.
+- Un tambour quand le nouveau roi prend le trône.
 
 | Verbe d’action | Condition de déclenchement | Effet visuel | Effet sonore | Effet interactif |
 |---------------|----------------------------|--------------|--------------|------------------|
